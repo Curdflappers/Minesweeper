@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class SpotButton : MonoBehaviour {
     Spot _spot;
@@ -11,8 +12,19 @@ public class SpotButton : MonoBehaviour {
         set { _spot = value; }
     }
 
-    public void Sweep()
+    /// <summary>
+    /// Interact with the given spot based on the game mode
+    /// </summary>
+    public void Interact()
     {
-        _spot.TrySweep();
+        if (GameController.SweepMode)
+        {
+            _spot.TrySweep();
+            GetComponentInChildren<Button>().interactable = !_spot.Revealed;
+        }
+        else
+        {
+            _spot.Flag();
+        }
     }
 }
