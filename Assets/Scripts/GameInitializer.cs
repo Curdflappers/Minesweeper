@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class GameInitializer : MonoBehaviour {
 
@@ -43,10 +42,10 @@ public class GameInitializer : MonoBehaviour {
         spotButton = (GameObject)Instantiate(spotButton, transform);
 
         Transform spotT = spotButton.transform;
-        Rect canvasRect = GetComponent<RectTransform>().rect;
+        Rect parentRect = GetComponent<RectTransform>().rect;
 
         spotT.localScale = new Vector3(1, 1, 1);
-        Vector3 offset = new Vector3(canvasRect.xMin, canvasRect.yMax);
+        Vector3 offset = new Vector3(parentRect.xMin, parentRect.yMax);
         spotT.localPosition = offset;
 
         for (int r = 0; r < Rows; r++)
@@ -65,7 +64,7 @@ public class GameInitializer : MonoBehaviour {
             // move to next row: reset x, update y
             spotT.localPosition =
                 new Vector3(
-                    canvasRect.xMin, 
+                    parentRect.xMin, 
                     spotT.localPosition.y - SideLength);
         }
 
@@ -84,13 +83,11 @@ public class GameInitializer : MonoBehaviour {
         Spot spot = new Spot(_mines[row, col], NeighboringMines(row, col));
         go.GetComponent<SpotButton>().Spot = spot;
         go.GetComponent<SpotView>().Spot = spot;
-
+        go.name = "" + (row * Cols + col);
     }
 
     int NeighboringMines(int row, int col)
     {
-        if (!ValidLoc(row, col)) { return -1; }
-
         int neighbors = 0;
         for(int r = row - 1; r <= row + 1; r++)
         {

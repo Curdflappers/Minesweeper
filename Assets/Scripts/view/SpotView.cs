@@ -33,14 +33,14 @@ public class SpotView : MonoBehaviour {
 
     void UpdateState(bool exploded)
     {
-        ChildImage("Flag Image").GetComponent<Image>().enabled = _spot.Flagged;
-        ChildImage("Unrevealed Image").GetComponent<Image>().enabled = !_spot.Revealed;
+        ChildImage("Flag Image").enabled = _spot.Flagged;
+        ChildImage("Unrevealed Image").enabled = !_spot.Revealed;
         if (!neighboringUpdated)
         {
             string path = "Sprites/";
             path += _spot.Mine ? "mine" : "" + _spot.NeighboringMines;
 
-            GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            ChildImage("Number Image").sprite = Resources.Load<Sprite>(path);
         }
     }
 
@@ -50,8 +50,8 @@ public class SpotView : MonoBehaviour {
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    Transform ChildImage(string name)
+    Image ChildImage(string name)
     {
-        return transform.FindChild(name);
+        return transform.FindChild(name).GetComponent<Image>();
     }
 }
