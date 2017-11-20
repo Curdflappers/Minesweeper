@@ -34,7 +34,9 @@ public class SpotView : MonoBehaviour {
     void UpdateState(bool exploded)
     {
         ChildImage("Flag Image").enabled = _spot.Flagged;
-        ChildImage("Unrevealed Image").enabled = !_spot.Revealed;
+        ChildImage("False Flag Image").enabled = 
+            _spot.Revealed && _spot.Flagged && !_spot.Mine;
+        ChildImage("Unrevealed Image").enabled = _spot.Flagged || !_spot.Revealed;
         if (!neighboringUpdated)
         {
             string path = "Sprites/";
