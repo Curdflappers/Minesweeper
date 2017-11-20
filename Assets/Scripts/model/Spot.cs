@@ -34,6 +34,18 @@ public class Spot {
         }
     }
 
+    /// <summary>
+    /// Reveal this spot without sweeping it
+    /// </summary>
+    public void Reveal()
+    {
+        if (!_revealed)
+        {
+            _revealed = true;
+            RaiseStateChanged(new SpotEventArgs(false));
+        }
+    }
+
     public void Flag()
     {
         _flagged = !_flagged;

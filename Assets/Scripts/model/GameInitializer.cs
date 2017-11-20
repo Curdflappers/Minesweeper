@@ -5,25 +5,33 @@ public class GameInitializer : MonoBehaviour {
     public int Rows, Cols;
     public int SideLength;
     bool[,] _mines;
+    Spot[,] _spots;
+    Game _game;
 
     /// <summary>
     /// The chance that any given location is a mine
     /// </summary>
     const float MINE_CHANCE = 0.2f;
 
+    private void Awake()
+    {
+        _spots = new Spot[Rows, Cols];
+        _mines = new bool[Rows, Cols];
+    }
+
     void Start()
     {
         CreateMines();
         PlaceSpots();
-        PrintMines();
+        _game = new Game(_spots);
+        //PrintMines();
     }
 
     /// <summary>
-    /// Instantiate and populate the minefield
+    /// Populate the minefield
     /// </summary>
     void CreateMines()
     {
-        _mines = new bool[Rows, Cols];
         for (int r = 0; r < Rows; r++)
             for (int c = 0; c < Cols; c++)
             {
@@ -80,10 +88,13 @@ public class GameInitializer : MonoBehaviour {
     /// <param name="col"></param>
     void PopulateSpot(GameObject go, int row, int col)
     {
+        go.name = "" + (row * Cols + col);
+
         Spot spot = new Spot(_mines[row, col], NeighboringMines(row, col));
         go.GetComponent<SpotButton>().Spot = spot;
         go.GetComponent<SpotView>().Spot = spot;
-        go.name = "" + (row * Cols + col);
+
+        _spots[row, col] = spot;
     }
 
     int NeighboringMines(int row, int col)
