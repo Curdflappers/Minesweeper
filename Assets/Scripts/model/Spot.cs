@@ -5,18 +5,23 @@ public class Spot {
     bool _revealed;
     bool _flagged;
     int _neighboringMines;
+    int _row, _col;
 
     public bool Mine { get { return _mine; } }
     public bool Revealed { get { return _revealed; } }
     public bool Flagged { get { return _flagged; } }
     public int NeighboringMines { get { return _neighboringMines; } }
+    public int Row { get { return _row; } }
+    public int Col { get { return _col; } }
 
-    public Spot(bool mine, int neighboringMines)
+    public Spot(bool mine, int neighboringMines, int row, int col)
     {
         _mine = mine;
         _revealed = false;
         _flagged = false;
         _neighboringMines = neighboringMines;
+        _row = row;
+        _col = col;
     }
 
     /// <summary>
@@ -26,12 +31,10 @@ public class Spot {
     /// </summary>
     public void TrySweep()
     {
-        if(_flagged) { return; }
-        if(!_revealed) // any revealed location has already been swept
-        {
-            _revealed = true;
-            RaiseStateChanged(new SpotEventArgs(_mine));
-        }
+        if(_flagged || _revealed) { return; }
+
+        _revealed = true;
+        RaiseStateChanged(new SpotEventArgs(_mine));
     }
 
     /// <summary>
