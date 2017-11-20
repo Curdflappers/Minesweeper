@@ -11,7 +11,7 @@ public class GameInitializer : MonoBehaviour {
     /// <summary>
     /// The chance that any given location is a mine
     /// </summary>
-    const float MINE_CHANCE = 0.2f;
+    const float MINE_CHANCE = 0.1f;
 
     private void Awake()
     {
@@ -90,7 +90,7 @@ public class GameInitializer : MonoBehaviour {
     {
         go.name = "" + (row * Cols + col);
 
-        Spot spot = new Spot(_mines[row, col], NeighboringMines(row, col));
+        Spot spot = new Spot(_mines[row, col], NeighboringMines(row, col), row, col);
         go.GetComponent<SpotButton>().Spot = spot;
         go.GetComponent<SpotView>().Spot = spot;
 

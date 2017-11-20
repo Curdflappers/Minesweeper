@@ -13,9 +13,26 @@ public class Game {
 
     public virtual void HandleExplosion(object o, SpotEventArgs e)
     {
+        Spot currSpot = (Spot)o;
         if (e.Exploded)
         {
             foreach (Spot spot in _spots) { spot.Reveal(); }
         }
+        else if(currSpot.Revealed)
+        {
+            // sweep all neighbors if this has no neighboring mines
+            if(currSpot.NeighboringMines == 0)
+            {
+                for(int r = currSpot.Row - 1; r <= currSpot.Row + 1; r++)
+                    for(int c = currSpot.Col - 1; c <= currSpot.Col + 1; c++)
+                        if (ValidLoc(r, c)) { _spots[r, c].TrySweep(); }
+            }
+        }
+    }
+
+    bool ValidLoc(int row, int col)
+    {
+        return row >= 0 && row < _spots.GetLength(0)
+            && col >= 0 && col < _spots.GetLength(1);
     }
 }
