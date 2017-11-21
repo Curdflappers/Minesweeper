@@ -2,7 +2,7 @@
 
 public class GameInitializer : MonoBehaviour {
 
-    public static int Rows = 5, Cols = 10;
+    public static int Rows = 10, Cols = 19;
     bool[,] _mines;
     Spot[,] _spots;
     Game _game;
@@ -10,7 +10,7 @@ public class GameInitializer : MonoBehaviour {
     /// <summary>
     /// The chance that any given location is a mine
     /// </summary>
-    const float MINE_CHANCE = 0.1f;
+    const float MINE_CHANCE = 0.2f;
 
     private void Awake()
     {
@@ -57,6 +57,17 @@ public class GameInitializer : MonoBehaviour {
 
         spotT.localScale = new Vector3(sizeMult, sizeMult, 1);
         Vector3 offset = new Vector3(parentRect.xMin, parentRect.yMax);
+        float epsilon = 0.0001f;
+        if(Mathf.Abs(sideLength - parentRect.width / Cols) <= epsilon) // span entire width
+        {
+            float emptySpace = parentRect.height - sideLength * Rows;
+            offset.y -= emptySpace / 2; // center vertically
+        }
+        else
+        {
+            float emptySpace = parentRect.width - sideLength * Cols;
+            offset.x += emptySpace / 2;
+        }
         spotT.localPosition = offset;
 
         for (int r = 0; r < Rows; r++)
@@ -74,9 +85,7 @@ public class GameInitializer : MonoBehaviour {
 
             // move to next row: reset x, update y
             spotT.localPosition =
-                new Vector3(
-                    parentRect.xMin, 
-                    spotT.localPosition.y - sideLength);
+                new Vector3(offset.x, spotT.localPosition.y - sideLength);
         }
 
         Destroy(spotButton);
