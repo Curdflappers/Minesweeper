@@ -1,14 +1,18 @@
+
 # Minesweeper
+
 A simple Minesweeper implementation for Android and PC
 
-TODO
-Basic functionality
-  Game
-    Tap to mark a spot
-    Tap swept spot to sweep unflagged neighbors
-    Long press to perform opposite action
-  Timer
-  Reset
-Difficulty and size customization
-Autosolver
-Hints
+Currently includes basic gameplay elements, including
+:  When clicking a revealed spot with *n* neighboring mines, sweep its neighbors if there are *n* or more flags around it
+
+Future elements include
+: Timer
+: Mine counter
+: Recognize game completion
+: Customize difficulty
+: Store high score
+: Give hints on demand
+: Autosolver
+
+> Written with [StackEdit](https://stackedit.io/).
