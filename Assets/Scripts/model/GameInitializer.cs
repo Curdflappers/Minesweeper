@@ -2,7 +2,7 @@
 
 public class GameInitializer : MonoBehaviour {
 
-    public int Rows, Cols;
+    public static int Rows = 10, Cols = 19;
     public int SideLength;
     bool[,] _mines;
     Spot[,] _spots;
@@ -16,28 +16,29 @@ public class GameInitializer : MonoBehaviour {
     private void Awake()
     {
         _spots = new Spot[Rows, Cols];
-        _mines = new bool[Rows, Cols];
     }
 
     void Start()
     {
-        CreateMines();
+        _mines = NewMines();
         PlaceSpots();
         _game = new Game(_spots);
+        PopulateButtons();
         //PrintMines();
     }
 
-    /// <summary>
-    /// Populate the minefield
-    /// </summary>
-    void CreateMines()
+    void PopulateButtons()
     {
+        GameObject.Find("Reset Button").GetComponent<GameController>().Game = _game;
+    }
+
+    public static bool[,] NewMines()
+    {
+        bool[,] mines = new bool[Rows, Cols];
         for (int r = 0; r < Rows; r++)
             for (int c = 0; c < Cols; c++)
-            {
-                float value = Random.Range(0, 1F);
-                _mines[r, c] = value < MINE_CHANCE;
-            }
+                mines[r, c] = Random.Range(0, 1f) < MINE_CHANCE;
+        return mines;
     }
 
     /// <summary>
@@ -90,14 +91,18 @@ public class GameInitializer : MonoBehaviour {
     {
         go.name = "" + (row * Cols + col);
 
-        Spot spot = new Spot(_mines[row, col], NeighboringMines(row, col), row, col);
+        Spot spot = new Spot(
+            _mines[row, col], 
+            NeighboringMines(row, col, _mines), 
+            row, 
+            col);
         go.GetComponent<SpotButton>().Spot = spot;
         go.GetComponent<SpotView>().Spot = spot;
 
         _spots[row, col] = spot;
     }
 
-    int NeighboringMines(int row, int col)
+    public static int NeighboringMines(int row, int col, bool[,] mines)
     {
         int neighbors = 0;
         for(int r = row - 1; r <= row + 1; r++)
@@ -105,20 +110,20 @@ public class GameInitializer : MonoBehaviour {
             for (int c = col - 1; c <= col + 1; c++)
             {
                 if((r == row && c == col) // do not check self
-                   || !ValidLoc(r, c)) // do not check invalid locs
+                   || !ValidLoc(r, c, mines)) // do not check invalid locs
                 {
                     continue;
                 }
-                else if (_mines[r, c]) { neighbors++; }
+                else if (mines[r, c]) { neighbors++; }
             }
         }
         return neighbors;
     }
 
-    bool ValidLoc(int row, int col)
+    static bool ValidLoc(int row, int col, bool[,] mines)
     {
-        return row >= 0 && row < _mines.GetLength(0)
-            && col >= 0 && col < _mines.GetLength(1);
+        return row >= 0 && row < mines.GetLength(0)
+            && col >= 0 && col < mines.GetLength(1);
     }
 
     /// <summary>

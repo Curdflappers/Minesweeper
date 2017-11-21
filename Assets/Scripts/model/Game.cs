@@ -35,4 +35,15 @@ public class Game {
         return row >= 0 && row < _spots.GetLength(0)
             && col >= 0 && col < _spots.GetLength(1);
     }
+
+    public void Reset()
+    {
+        bool[,] mines = GameInitializer.NewMines();
+
+        for (int r = 0; r < mines.GetLength(0); r++)
+            for (int c = 0; c < mines.GetLength(1); c++)
+                _spots[r, c].Reset(
+                    mines[r, c], 
+                    GameInitializer.NeighboringMines(r, c, mines));
+    }
 }

@@ -44,10 +44,8 @@ public class SpotView : MonoBehaviour {
 
             ChildImage("Number Image").sprite = Resources.Load<Sprite>(path);
         }
-        if(exploded)
-        {
-            GetComponent<Image>().color = Color.red;
-        }
+
+        GetComponent<Image>().color = exploded ? Color.red : Color.white;
     }
 
     /// <summary>

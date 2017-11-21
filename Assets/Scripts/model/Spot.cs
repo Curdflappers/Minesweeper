@@ -63,4 +63,13 @@ public class Spot {
             StateChanged(this, e); // notify all listeners
         }
     }
+
+    public void Reset(bool mine, int neighboringMines)
+    {
+        _revealed = false;
+        _flagged = false;
+        _mine = mine;
+        _neighboringMines = neighboringMines;
+        RaiseStateChanged(new SpotEventArgs(false));
+    }
 }

@@ -9,7 +9,11 @@ public class SpotButton : MonoBehaviour {
     public Spot Spot
     {
         get { return _spot; }
-        set { _spot = value; }
+        set
+        {
+            _spot = value;
+            _spot.StateChanged += HandleStateChanged;
+        }
     }
 
     /// <summary>
@@ -20,11 +24,16 @@ public class SpotButton : MonoBehaviour {
         if (GameController.SweepMode)
         {
             _spot.TrySweep();
-            GetComponentInChildren<Button>().interactable = !_spot.Revealed;
         }
         else
         {
             _spot.Flag();
         }
+    }
+
+    public virtual void HandleStateChanged(object o, SpotEventArgs e)
+    {
+        Spot spot = (Spot)o;
+        GetComponentInChildren<Button>().interactable = !_spot.Revealed;
     }
 }
