@@ -1,0 +1,35 @@
+Potential Features
+	BASIC GAMEPLAY	
+	Autocomplete the game if num unrevealed spots == mines left
+	
+	Timer
+	
+	Long press functionality
+		Unrevealed: do opposite action (sweep vs flag)
+		Revealed:
+			highlight unrevealed neighbors (for clarity)
+		
+	Reset button
+	
+	Save game functionality
+		
+		
+	ADVANCED GAMEPLAY
+	"Dig up" mines
+		Remove a mine from the field, updating its neighbors' numbers
+	
+	Different colored flags
+	
+	Autosolver
+	
+	Hints
+	
+	
+	OTHER
+	Menu/intro screen
+	
+	Customization of size, difficulty
+		Preset sizes, difficulties
+		User-defined sizes and mine counts
+	
+	High score tracker
