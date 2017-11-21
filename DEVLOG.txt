@@ -26,3 +26,6 @@ Hour 9
 	Build 0.0.1
 	Write feature: Center minefield on screen
 	
+Hour 10
+	Update background color
+	Resolve merge conflicts and update README
