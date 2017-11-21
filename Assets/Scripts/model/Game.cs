@@ -8,6 +8,7 @@ public class Game {
         foreach(Spot spot in _spots)
         {
             spot.StateChanged += HandleExplosion;
+            spot.Clicked += HandleSpotClicked;
         }
     }
 
@@ -28,6 +29,47 @@ public class Game {
                         if (ValidLoc(r, c)) { _spots[r, c].TrySweep(); }
             }
         }
+    }
+
+    public virtual void HandleSpotClicked(object o, SpotEventArgs e)
+    {
+        Spot spot = (Spot)o;
+
+        if (spot.Revealed)
+        {
+            // if flagged neighbors cancel out neighboring mine
+            // sweep neighbors, regardless of game mode
+            if (NeighboringFlags(spot) >= spot.NeighboringMines)
+                TrySweepNeighbors(spot);
+            return;
+        }
+
+        if (GameController.SweepMode)
+        {
+            spot.TrySweep();
+        }
+        else
+        {
+            spot.Flag();
+        }
+    }
+
+    void TrySweepNeighbors(Spot spot)
+    {
+        for (int r = spot.Row - 1; r <= spot.Row + 1; r++)
+            for (int c = spot.Col - 1; c <= spot.Col + 1; c++)
+                if (ValidLoc(r, c))
+                    _spots[r, c].TrySweep();
+    }
+
+    int NeighboringFlags(Spot spot)
+    {
+        int flags = 0;
+        for (int r = spot.Row - 1; r <= spot.Row + 1; r++)
+            for (int c = spot.Col - 1; c <= spot.Col + 1; c++)
+                if (ValidLoc(r, c))
+                    flags += _spots[r, c].Flagged ? 1 : 0;
+        return flags;
     }
 
     bool ValidLoc(int row, int col)

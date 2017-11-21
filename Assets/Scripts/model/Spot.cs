@@ -12,6 +12,12 @@ public class Spot {
     public bool Flagged { get { return _flagged; } }
     public int NeighboringMines { get { return _neighboringMines; } }
     public int Row { get { return _row; } }
+
+    internal void HandleOnClick()
+    {
+        RaiseClicked(new SpotEventArgs(false));
+    }
+
     public int Col { get { return _col; } }
 
     public Spot(bool mine, int neighboringMines, int row, int col)
@@ -61,6 +67,15 @@ public class Spot {
         if (StateChanged != null) // if there are some listeners
         {
             StateChanged(this, e); // notify all listeners
+        }
+    }
+
+    public event EventHandler<SpotEventArgs> Clicked;
+    protected virtual void RaiseClicked(SpotEventArgs e)
+    {
+        if (Clicked != null)
+        {
+            Clicked(this, e);
         }
     }
 
