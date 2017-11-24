@@ -30,3 +30,8 @@ Hour 10
 	Update background color
 	Resolve merge conflicts and update README
 	Build 0.0.2
+	
+Hour 11
+	Move game intialization logic into Game
+	Keep UI initialization in GameInitiliazer
+	Make Game generate set amount of mines (still random)

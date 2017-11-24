@@ -12,7 +12,7 @@ public class GameInitializer : MonoBehaviour {
 
     void Start()
     {
-        _game = new Game(Rows, Cols, MINE_CHANCE);
+        _game = new Game(Rows, Cols, (int)(MINE_CHANCE * Rows * Cols));
         PlaceSpots();
         PopulateButtons();
     }

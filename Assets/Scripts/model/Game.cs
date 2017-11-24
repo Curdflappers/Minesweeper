@@ -1,10 +1,11 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Game {
     Spot[,] _spots;
     int _rows, _cols;
-    float _mineChance;
+    int _mineCount;
 
     public Spot[,] Spots
     {
@@ -24,11 +25,11 @@ public class Game {
     /// </summary>
     /// <param name="rows"></param>
     /// <param name="cols"></param>
-    public Game(int rows, int cols, float mineChance)
+    public Game(int rows, int cols, int mineCount)
     {
         _rows = rows;
         _cols = cols;
-        _mineChance = mineChance;
+        _mineCount = mineCount;
         _spots = new Spot[_rows, _cols];
         bool[,] mines = NewMines();
         for(int r = 0; r < _rows; r++)
@@ -57,8 +58,7 @@ public class Game {
         }
         return neighbors;
     }
-
-    
+        
     bool ValidLoc(int row, int col, bool[,] mines)
     {
         return row >= 0 && row < mines.GetLength(0)
@@ -67,10 +67,22 @@ public class Game {
 
     public bool[,] NewMines()
     {
+        List<Location> locs = new List<Location>();
+
+
         bool[,] mines = new bool[_rows, _cols];
         for (int r = 0; r < _rows; r++)
             for (int c = 0; c < _cols; c++)
-                mines[r, c] = Random.Range(0, 1f) < _mineChance;
+                locs.Add(new Location(r, c));
+
+        for(int i = 0; i < _mineCount && locs.Count > 0; i++)
+        {
+            int index = Random.Range(0, locs.Count);
+            Location loc = locs[index];
+            mines[loc.Row, loc.Col] = true;
+            locs.RemoveAt(index);
+        }
+
         return mines;
     }
 
@@ -169,5 +181,15 @@ public class Game {
         for (int r = 0; r < mines.GetLength(0); r++)
             for (int c = 0; c < mines.GetLength(1); c++)
                 _spots[r, c].Reset(mines[r, c], NeighboringMines(r, c, mines));
+    }
+
+    private class Location
+    {
+        public int Row, Col;
+        public Location(int row, int col)
+        {
+            Row = row;
+            Col = col;
+        }
     }
 }
