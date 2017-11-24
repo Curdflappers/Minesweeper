@@ -1,11 +1,15 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Game {
     Spot[,] _spots;
     int _rows, _cols;
-    int _mineCount;
+    int _totalMines;
+    int _minesLeft;
+
+    public int MinesLeft { get { return _minesLeft; } }
 
     public Spot[,] Spots
     {
@@ -29,7 +33,8 @@ public class Game {
     {
         _rows = rows;
         _cols = cols;
-        _mineCount = mineCount;
+        _totalMines = mineCount;
+        _minesLeft = mineCount;
         _spots = new Spot[_rows, _cols];
         bool[,] mines = NewMines();
         for(int r = 0; r < _rows; r++)
@@ -68,16 +73,14 @@ public class Game {
     public bool[,] NewMines()
     {
         List<Location> locs = new List<Location>();
-
-
         bool[,] mines = new bool[_rows, _cols];
         for (int r = 0; r < _rows; r++)
             for (int c = 0; c < _cols; c++)
                 locs.Add(new Location(r, c));
 
-        for(int i = 0; i < _mineCount && locs.Count > 0; i++)
+        for(int i = 0; i < _totalMines && locs.Count > 0; i++)
         {
-            int index = Random.Range(0, locs.Count);
+            int index = UnityEngine.Random.Range(0, locs.Count);
             Location loc = locs[index];
             mines[loc.Row, loc.Col] = true;
             locs.RemoveAt(index);
@@ -103,19 +106,22 @@ public class Game {
     {
         foreach (Spot spot in _spots)
         {
-            spot.StateChanged += HandleExplosion;
+            spot.StateChanged += HandleStateChanged;
             spot.Clicked += HandleSpotClicked;
         }
     }
 
-    public virtual void HandleExplosion(object o, SpotEventArgs e)
+    public virtual void HandleStateChanged(object o, SpotEventArgs e)
     {
         Spot currSpot = (Spot)o;
         if (e.Exploded)
         {
             foreach (Spot spot in _spots) { spot.Reveal(); }
+            return;
         }
-        else if(currSpot.Revealed)
+
+        // Spot was swept, but didn't explode
+        if (currSpot.Revealed)
         {
             // sweep all neighbors if this has no neighboring mines
             if(currSpot.NeighboringMines == 0)
@@ -124,6 +130,11 @@ public class Game {
                     for(int c = currSpot.Col - 1; c <= currSpot.Col + 1; c++)
                         if (ValidLoc(r, c)) { _spots[r, c].TrySweep(); }
             }
+        }
+        else // spot flag state changed, update mines left
+        {
+            _minesLeft += currSpot.Flagged ? -1 : 1;
+            RaiseMinesLeftChanged(new GameEventArgs());
         }
     }
 
@@ -181,6 +192,15 @@ public class Game {
         for (int r = 0; r < mines.GetLength(0); r++)
             for (int c = 0; c < mines.GetLength(1); c++)
                 _spots[r, c].Reset(mines[r, c], NeighboringMines(r, c, mines));
+    }
+
+    public event EventHandler<GameEventArgs> MinesLeftChanged;
+    protected virtual void RaiseMinesLeftChanged(GameEventArgs e)
+    {
+        if (MinesLeftChanged != null)
+        {
+            MinesLeftChanged(this, e);
+        }
     }
 
     private class Location

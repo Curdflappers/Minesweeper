@@ -14,12 +14,18 @@ public class GameInitializer : MonoBehaviour {
     {
         _game = new Game(Rows, Cols, (int)(MINE_CHANCE * Rows * Cols));
         PlaceSpots();
-        PopulateButtons();
+        ConnectUI();
     }
 
-    void PopulateButtons()
+    /// <summary>
+    /// Connect UI to listen to game logic
+    /// </summary>
+    void ConnectUI()
     {
-        GameObject.Find("Reset Button").GetComponent<GameController>().Game = _game;
+        GameObject.Find("Reset Button").
+            GetComponent<GameController>().Game = _game;
+        GameObject.Find("Mines Left Text").
+            GetComponent<MinesLeftView>().Game = _game;
     }
 
     /// <summary>
