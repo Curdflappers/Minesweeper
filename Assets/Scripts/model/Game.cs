@@ -92,8 +92,8 @@ public class Game {
 
         for(int i = 0; i < _totalMines && locs.Count > 0; i++)
         {
-            int index = i; // for debugging
-            //int index = UnityEngine.Random.Range(0, locs.Count);
+            //int index = i; // for debugging
+            int index = UnityEngine.Random.Range(0, locs.Count);
             Location loc = locs[index];
             mines[loc.Row, loc.Col] = true;
             locs.RemoveAt(index);

@@ -40,3 +40,4 @@ Hour 11
 Hour 12
 	Autocomplete game if unknown spots == mines left
 	Implement timer
+	Build 0.1.0
