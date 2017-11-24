@@ -29,3 +29,4 @@ Hour 9
 Hour 10
 	Update background color
 	Resolve merge conflicts and update README
+	Build 0.0.2

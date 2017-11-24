@@ -1,11 +1,95 @@
 ﻿
+using UnityEngine;
+
 public class Game {
     Spot[,] _spots;
+    int _rows, _cols;
+    float _mineChance;
 
+    public Spot[,] Spots
+    {
+        get
+        {
+            if(_spots == null) { return null; }
+            Spot[,] spots =  new Spot[_spots.GetLength(0), _spots.GetLength(1)];
+            for (int r = 0; r < spots.GetLength(0); r++)
+                for (int c = 0; c < spots.GetLength(1); c++)
+                    spots[r, c] = _spots[r, c];
+            return spots;
+        }
+    }
+
+    /// <summary>
+    /// Creates a new game, creating its own array of spots
+    /// </summary>
+    /// <param name="rows"></param>
+    /// <param name="cols"></param>
+    public Game(int rows, int cols, float mineChance)
+    {
+        _rows = rows;
+        _cols = cols;
+        _mineChance = mineChance;
+        _spots = new Spot[_rows, _cols];
+        bool[,] mines = NewMines();
+        for(int r = 0; r < _rows; r++)
+            for(int c = 0; c < _cols; c++)
+            {
+                int neighboringMines = NeighboringMines(r, c, mines);
+                _spots[r, c] = new Spot(mines[r, c], neighboringMines, r, c);
+            }
+        AttachSpots();
+    }
+
+    private int NeighboringMines(int row, int col, bool[,] mines)
+    {
+        int neighbors = 0;
+        for (int r = row - 1; r <= row + 1; r++)
+        {
+            for (int c = col - 1; c <= col + 1; c++)
+            {
+                if ((r == row && c == col) // do not check self
+                   || !ValidLoc(r, c, mines)) // do not check invalid locs
+                {
+                    continue;
+                }
+                else if (mines[r, c]) { neighbors++; }
+            }
+        }
+        return neighbors;
+    }
+
+    
+    bool ValidLoc(int row, int col, bool[,] mines)
+    {
+        return row >= 0 && row < mines.GetLength(0)
+            && col >= 0 && col < mines.GetLength(1);
+    }
+
+    public bool[,] NewMines()
+    {
+        bool[,] mines = new bool[_rows, _cols];
+        for (int r = 0; r < _rows; r++)
+            for (int c = 0; c < _cols; c++)
+                mines[r, c] = Random.Range(0, 1f) < _mineChance;
+        return mines;
+    }
+
+    /// <summary>
+    /// Creates a new game, assuming <paramref name="spots"/> is a populated
+    /// array of spots
+    /// </summary>
+    /// <param name="spots"></param>
     public Game(Spot[,] spots)
     {
         _spots = spots;
-        foreach(Spot spot in _spots)
+    }
+
+    /// <summary>
+    /// Listen to each element of _spots
+    /// </summary>
+    private void AttachSpots()
+    {
+        foreach (Spot spot in _spots)
         {
             spot.StateChanged += HandleExplosion;
             spot.Clicked += HandleSpotClicked;
@@ -80,12 +164,10 @@ public class Game {
 
     public void Reset()
     {
-        bool[,] mines = GameInitializer.NewMines();
+        bool[,] mines = NewMines();
 
         for (int r = 0; r < mines.GetLength(0); r++)
             for (int c = 0; c < mines.GetLength(1); c++)
-                _spots[r, c].Reset(
-                    mines[r, c], 
-                    GameInitializer.NeighboringMines(r, c, mines));
+                _spots[r, c].Reset(mines[r, c], NeighboringMines(r, c, mines));
     }
 }
