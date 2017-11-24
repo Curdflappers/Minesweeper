@@ -130,10 +130,17 @@ public class Game {
         Spot currSpot = (Spot)o;
         if (e.Exploded)
         {
+            _gameOver = true;
+            _gameWon = false;
             foreach (Spot spot in _spots) { spot.Reveal(); }
+            RaiseMinesLeftChanged(null);
             return;
         }
-        
+
+        if (_gameOver)
+        {
+            return;
+        }
         _unflaggedSpots += currSpot.Flagged || currSpot.Revealed ? -1 : 1;
 
         // Spot was swept, but didn't explode
