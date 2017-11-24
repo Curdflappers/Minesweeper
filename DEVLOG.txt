@@ -41,3 +41,8 @@ Hour 12
 	Autocomplete game if unknown spots == mines left
 	Implement timer
 	Build 0.1.0
+
+Hour 13
+	Fix bug: No longer false reveal on mine explosion
+	Fix bug: End timer on mine explosion
+	Build 0.1.1
