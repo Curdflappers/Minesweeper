@@ -35,3 +35,7 @@ Hour 11
 	Move game intialization logic into Game
 	Keep UI initialization in GameInitiliazer
 	Make Game generate set amount of mines (still random)
+	Add mines left counter
+	
+Hour 12
+	Autocomplete game if unknown spots == mines left

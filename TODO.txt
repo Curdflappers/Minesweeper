@@ -1,6 +1,5 @@
 Potential Features
-	BASIC GAMEPLAY	
-	Autocomplete the game if num unrevealed spots == mines left
+	BASIC GAMEPLAY
 	
 	Timer
 	
@@ -8,8 +7,6 @@ Potential Features
 		Unrevealed: do opposite action (sweep vs flag)
 		Revealed:
 			highlight unrevealed neighbors (for clarity)
-		
-	Reset button
 	
 	Save game functionality
 		

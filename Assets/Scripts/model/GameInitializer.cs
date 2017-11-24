@@ -2,7 +2,7 @@
 
 public class GameInitializer : MonoBehaviour {
 
-    public static int Rows = 10, Cols = 19;
+    public static int Rows = 4, Cols = 4;
     Game _game;
 
     /// <summary>
@@ -12,7 +12,7 @@ public class GameInitializer : MonoBehaviour {
 
     void Start()
     {
-        _game = new Game(Rows, Cols, (int)(MINE_CHANCE * Rows * Cols));
+        _game = new Game(Rows, Cols, (int)(3));
         PlaceSpots();
         ConnectUI();
     }

@@ -8,6 +8,15 @@ public class Game {
     int _rows, _cols;
     int _totalMines;
     int _minesLeft;
+    /// <summary>
+    /// The number of unflagged, unrevealed spots left in the minefield
+    /// </summary>
+    int _unflaggedSpots;
+
+    /// <summary>
+    /// True if the reset method is executing, useful for ignoring state change
+    /// </summary>
+    bool _resetting = false;
 
     public int MinesLeft { get { return _minesLeft; } }
 
@@ -36,6 +45,7 @@ public class Game {
         _totalMines = mineCount;
         _minesLeft = mineCount;
         _spots = new Spot[_rows, _cols];
+        _unflaggedSpots = _rows * _cols; // all spots unflagged
         bool[,] mines = NewMines();
         for(int r = 0; r < _rows; r++)
             for(int c = 0; c < _cols; c++)
@@ -80,7 +90,8 @@ public class Game {
 
         for(int i = 0; i < _totalMines && locs.Count > 0; i++)
         {
-            int index = UnityEngine.Random.Range(0, locs.Count);
+            int index = i; // for debugging
+            //int index = UnityEngine.Random.Range(0, locs.Count);
             Location loc = locs[index];
             mines[loc.Row, loc.Col] = true;
             locs.RemoveAt(index);
@@ -113,12 +124,15 @@ public class Game {
 
     public virtual void HandleStateChanged(object o, SpotEventArgs e)
     {
+        if(_resetting) { return; } // don't update on spot resets
         Spot currSpot = (Spot)o;
         if (e.Exploded)
         {
             foreach (Spot spot in _spots) { spot.Reveal(); }
             return;
         }
+        
+        _unflaggedSpots += currSpot.Flagged || currSpot.Revealed ? -1 : 1;
 
         // Spot was swept, but didn't explode
         if (currSpot.Revealed)
@@ -135,6 +149,14 @@ public class Game {
         {
             _minesLeft += currSpot.Flagged ? -1 : 1;
             RaiseMinesLeftChanged(new GameEventArgs());
+        }
+        
+        if (_unflaggedSpots == _minesLeft)
+        {
+            foreach (Spot spot in _spots)
+            {
+                if (!spot.Revealed && !spot.Flagged) { spot.Flag(); }
+            }
         }
     }
 
@@ -187,11 +209,17 @@ public class Game {
 
     public void Reset()
     {
+        _resetting = true;
         bool[,] mines = NewMines();
 
         for (int r = 0; r < mines.GetLength(0); r++)
             for (int c = 0; c < mines.GetLength(1); c++)
                 _spots[r, c].Reset(mines[r, c], NeighboringMines(r, c, mines));
+
+        _minesLeft = _totalMines;
+        _unflaggedSpots = _rows * _cols;
+        _resetting = false;
+        RaiseMinesLeftChanged(null);
     }
 
     public event EventHandler<GameEventArgs> MinesLeftChanged;
