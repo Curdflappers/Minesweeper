@@ -12,13 +12,14 @@ public class Game {
     /// The number of unflagged, unrevealed spots left in the minefield
     /// </summary>
     int _unflaggedSpots;
-
-    /// <summary>
-    /// True if the reset method is executing, useful for ignoring state change
-    /// </summary>
-    bool _resetting = false;
+    bool _newGame;
+    bool _gameOver;
+    bool _gameWon;
 
     public int MinesLeft { get { return _minesLeft; } }
+    public bool NewGame { get { return _newGame; } }
+    public bool GameOver { get { return _gameOver; } }
+    public bool GameWon { get { return _gameWon; } }
 
     public Spot[,] Spots
     {
@@ -46,6 +47,7 @@ public class Game {
         _minesLeft = mineCount;
         _spots = new Spot[_rows, _cols];
         _unflaggedSpots = _rows * _cols; // all spots unflagged
+        _newGame = true;
         bool[,] mines = NewMines();
         for(int r = 0; r < _rows; r++)
             for(int c = 0; c < _cols; c++)
@@ -117,14 +119,14 @@ public class Game {
     {
         foreach (Spot spot in _spots)
         {
-            spot.StateChanged += HandleStateChanged;
+            spot.StateChanged += HandleSpotChanged;
             spot.Clicked += HandleSpotClicked;
         }
     }
 
-    public virtual void HandleStateChanged(object o, SpotEventArgs e)
+    public virtual void HandleSpotChanged(object o, SpotEventArgs e)
     {
-        if(_resetting) { return; } // don't update on spot resets
+        if(_newGame) { return; } // don't update on spot resets
         Spot currSpot = (Spot)o;
         if (e.Exploded)
         {
@@ -153,15 +155,23 @@ public class Game {
         
         if (_unflaggedSpots == _minesLeft)
         {
+            _gameOver = true;
+            _gameWon = true;
             foreach (Spot spot in _spots)
             {
                 if (!spot.Revealed && !spot.Flagged) { spot.Flag(); }
             }
+            RaiseMinesLeftChanged(new GameEventArgs());
         }
     }
 
     public virtual void HandleSpotClicked(object o, SpotEventArgs e)
     {
+        if (_newGame)
+        {
+            _newGame = false;
+            RaiseMinesLeftChanged(null);
+        }
         Spot spot = (Spot)o;
 
         if (spot.Revealed)
@@ -209,7 +219,9 @@ public class Game {
 
     public void Reset()
     {
-        _resetting = true;
+        _newGame = true;
+        _gameOver = false;
+        _gameWon = false;
         bool[,] mines = NewMines();
 
         for (int r = 0; r < mines.GetLength(0); r++)
@@ -218,7 +230,6 @@ public class Game {
 
         _minesLeft = _totalMines;
         _unflaggedSpots = _rows * _cols;
-        _resetting = false;
         RaiseMinesLeftChanged(null);
     }
 

@@ -1,17 +1,15 @@
 Potential Features
 	BASIC GAMEPLAY
 	
-	Timer
-	
 	Long press functionality
 		Unrevealed: do opposite action (sweep vs flag)
 		Revealed:
 			highlight unrevealed neighbors (for clarity)
+		
 	
-	Save game functionality
-		
-		
+	
 	ADVANCED GAMEPLAY
+	
 	"Dig up" mines
 		Remove a mine from the field, updating its neighbors' numbers
 	
@@ -22,7 +20,11 @@ Potential Features
 	Hints
 	
 	
+	
 	OTHER
+	
+	Save game functionality
+	
 	Menu/intro screen
 	
 	Customization of size, difficulty

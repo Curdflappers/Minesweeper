@@ -26,6 +26,8 @@ public class GameInitializer : MonoBehaviour {
             GetComponent<GameController>().Game = _game;
         GameObject.Find("Mines Left Text").
             GetComponent<MinesLeftView>().Game = _game;
+        GameObject.Find("Timer Text").
+            GetComponent<TimerView>().Game = _game;
     }
 
     /// <summary>
