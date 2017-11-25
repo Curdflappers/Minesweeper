@@ -46,3 +46,4 @@ Hour 13
 	Fix bug: No longer false reveal on mine explosion
 	Fix bug: End timer on mine explosion
 	Build 0.1.1
+	Add Menu Scene
