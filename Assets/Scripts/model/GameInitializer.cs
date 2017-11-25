@@ -8,11 +8,11 @@ public class GameInitializer : MonoBehaviour {
     /// <summary>
     /// The chance that any given location is a mine
     /// </summary>
-    const float MINE_CHANCE = 0.2f;
+    public static int Mines = 38;
 
     void Start()
     {
-        _game = new Game(Rows, Cols, (int)(Rows * Cols * MINE_CHANCE));
+        _game = new Game(Rows, Cols, Mines);
         PlaceSpots();
         ConnectUI();
     }
