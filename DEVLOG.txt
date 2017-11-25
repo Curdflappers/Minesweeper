@@ -47,3 +47,10 @@ Hour 13
 	Fix bug: End timer on mine explosion
 	Build 0.1.1
 	Add Menu Scene
+
+Hour 14
+	Start feature: Settings Scene
+	
+Hour 15
+	Complete feature: Settings Scene (23 minutes in)
+	Build 0.2.0
