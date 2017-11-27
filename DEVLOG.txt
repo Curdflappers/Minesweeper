@@ -60,3 +60,8 @@ Hour 15
 		Expert: 16x30, 99 mines
 		Endurance: 20x40, 160 mines
 	Refactor Settings into MVC framework
+	
+Hour 16
+	Refactor Mode Button into MVC framework
+
+

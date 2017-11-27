@@ -4,6 +4,7 @@ public class Settings
 {
     public static int Rows = 16, Cols = 16, Mines = 40;
     const int MAX_ROWS = 20, MAX_COLS = 40;
+    public static bool SweepMode = true;
 
     public static void UpdateField(string field, int value)
     {
@@ -30,6 +31,10 @@ public class Settings
                     Mines = value;
                 }
                 newValue = Mines;
+                break;
+            case ("mode"):
+                SweepMode = value != 0;
+                newValue = SweepMode ? 1 : 0;
                 break;
         }
 

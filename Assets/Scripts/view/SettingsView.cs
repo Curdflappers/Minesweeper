@@ -6,12 +6,12 @@ public class SettingsView : MonoBehaviour {
 
     public string Field;
 
-	void Start () {
+	internal virtual void Start () {
         Settings.FieldChanged += HandleFieldChanged;
         SetInitialView();
 	}
 
-    void SetInitialView()
+    internal virtual void SetInitialView()
     {
         int value = 0;
         switch(Field)
@@ -30,7 +30,7 @@ public class SettingsView : MonoBehaviour {
         GetComponent<InputField>().text = "" + value;
     }
 
-    void HandleFieldChanged(object o, SettingsEventArgs e)
+    internal virtual void HandleFieldChanged(object o, SettingsEventArgs e)
     {
         if(e.Field.Equals(Field))
         {
@@ -38,7 +38,7 @@ public class SettingsView : MonoBehaviour {
         }
     }
 
-    private void OnDestroy()
+    internal void OnDestroy()
     {
         Settings.FieldChanged -= HandleFieldChanged;
     }

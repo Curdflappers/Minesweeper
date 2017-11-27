@@ -190,7 +190,7 @@ public class Game {
             return;
         }
 
-        if (GameController.SweepMode)
+        if (Settings.SweepMode)
         {
             spot.TrySweep();
         }
