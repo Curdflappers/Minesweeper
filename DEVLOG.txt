@@ -63,5 +63,5 @@ Hour 15
 	
 Hour 16
 	Refactor Mode Button into MVC framework
-
+	Build 0.2.1
 
