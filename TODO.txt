@@ -1,34 +1,27 @@
-Potential Features
-	BASIC GAMEPLAY
+--BASIC GAMEPLAY--
 	
-	Long press functionality
-		Unrevealed: do opposite action (sweep vs flag)
-		Revealed:
-			highlight unrevealed neighbors (for clarity)
-		
+Long press functionality
+	Unrevealed: do opposite action (sweep vs flag)
+	Revealed: highlight unrevealed neighbors (for clarity)
 	
-	
-	ADVANCED GAMEPLAY
-	
-	"Dig up" mines
-		Remove a mine from the field, updating its neighbors' numbers
-	
-	Different colored flags
-	
-	Autosolver
-	
-	Hints
-	
-	
-	
-	OTHER
-	
-	Save game functionality
-	
-	Menu/intro screen
-	
-	Customization of size, difficulty
-		Preset sizes, difficulties
-		User-defined sizes and mine counts
-	
-	High score tracker
+
+
+--ADVANCED GAMEPLAY--
+
+"Dig up" mines: Remove a mine from the field, updating its neighbors' numbers
+
+Different colored flags
+
+Autosolver
+
+Hints
+
+
+
+--OTHER--
+
+Save game functionality
+
+High score tracker
+
+Confirm button upon resetting incomplete games

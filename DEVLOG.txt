@@ -52,5 +52,10 @@ Hour 14
 	Start feature: Settings Scene
 	
 Hour 15
-	Complete feature: Settings Scene (23 minutes in)
+	Complete feature: Settings Scene
 	Build 0.2.0
+	Add preset difficulties
+		Beginner: 9x9, 10 mines
+		Intermediate: 16x16, 40 mines
+		Expert: 16x30, 99 mines
+		Endurance: 20x40, 160 mines

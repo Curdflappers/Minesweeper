@@ -56,8 +56,55 @@ public class SettingsController : MonoBehaviour {
         GetComponent<InputField>().text = "" + value;
     }
 
+    public void SetDifficulty()
+    {
+        bool success = true;
+        switch (Field)
+        {
+            case ("beginner"):
+                GameInitializer.Rows = 9;
+                GameInitializer.Cols = 9;
+                GameInitializer.Mines = 10;
+                break;
+            case ("intermediate"):
+                GameInitializer.Rows = 16;
+                GameInitializer.Cols = 16;
+                GameInitializer.Mines = 40;
+                break;
+            case ("expert"):
+                GameInitializer.Rows = 16;
+                GameInitializer.Cols = 30;
+                GameInitializer.Mines = 99;
+                break;
+            case ("endurance"):
+                GameInitializer.Rows = 20;
+                GameInitializer.Cols = 40;
+                GameInitializer.Mines = 160;
+                break;
+            default:
+                success = false;
+                break;
+        }
+
+        if(success) { UpdateInputFields(); }
+    }
+
+    void UpdateInputFields()
+    {
+        GameObject.Find("Rows Input").GetComponent<InputField>().text =
+            "" + GameInitializer.Rows;
+        GameObject.Find("Columns Input").GetComponent<InputField>().text =
+            "" + GameInitializer.Cols;
+        GameObject.Find("Mines Input").GetComponent<InputField>().text =
+            "" + GameInitializer.Mines;
+    }
+
+    /// <summary>
+    /// Update the text if this is an input field
+    /// </summary>
     private void Start()
     {
+        if(GetComponent<InputField>() == null) { return; }
         int value = 0;
         switch (Field)
         {

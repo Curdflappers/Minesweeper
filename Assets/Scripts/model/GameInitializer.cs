@@ -2,13 +2,13 @@
 
 public class GameInitializer : MonoBehaviour {
 
-    public static int Rows = 10, Cols = 19;
+    public static int Rows = 16, Cols = 16;
     Game _game;
 
     /// <summary>
     /// The chance that any given location is a mine
     /// </summary>
-    public static int Mines = 38;
+    public static int Mines = 40;
 
     void Start()
     {
