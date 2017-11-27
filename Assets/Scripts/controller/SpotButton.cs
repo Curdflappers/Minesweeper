@@ -9,7 +9,6 @@ public class SpotButton : MonoBehaviour {
         set
         {
             _spot = value;
-            _spot.StateChanged += HandleStateChanged;
         }
     }
 
@@ -19,11 +18,5 @@ public class SpotButton : MonoBehaviour {
     public void OnClick()
     {
         _spot.HandleOnClick();
-    }
-
-    public virtual void HandleStateChanged(object o, SpotEventArgs e)
-    {
-        Spot spot = (Spot)o;
-        //GetComponentInChildren<Button>().interactable = !_spot.Revealed;
     }
 }
