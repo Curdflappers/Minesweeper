@@ -1,18 +1,11 @@
 ﻿using UnityEngine;
 
 public class GameInitializer : MonoBehaviour {
-
-    public static int Rows = 16, Cols = 16;
     Game _game;
-
-    /// <summary>
-    /// The chance that any given location is a mine
-    /// </summary>
-    public static int Mines = 40;
 
     void Start()
     {
-        _game = new Game(Rows, Cols, Mines);
+        _game = new Game(Settings.Rows, Settings.Cols, Settings.Mines);
         PlaceSpots();
         ConnectUI();
     }
@@ -41,27 +34,29 @@ public class GameInitializer : MonoBehaviour {
 
         Transform spotT = spotButton.transform;
         Rect parentRect = GetComponent<RectTransform>().rect;
-        float sideLength = Mathf.Min(parentRect.width / Cols, parentRect.height / Rows);
+        float sideLength = Mathf.Min(
+            parentRect.width / Settings.Cols, 
+            parentRect.height / Settings.Rows);
         float sizeMult = sideLength / 100;
 
         spotT.localScale = new Vector3(sizeMult, sizeMult, 1);
         Vector3 offset = new Vector3(parentRect.xMin, parentRect.yMax);
         float epsilon = 0.0001f;
-        if(Mathf.Abs(sideLength - parentRect.width / Cols) <= epsilon) // span entire width
+        if(Mathf.Abs(sideLength - parentRect.width / Settings.Cols) <= epsilon)
         {
-            float emptySpace = parentRect.height - sideLength * Rows;
+            float emptySpace = parentRect.height - sideLength * Settings.Rows;
             offset.y -= emptySpace / 2; // center vertically
         }
         else
         {
-            float emptySpace = parentRect.width - sideLength * Cols;
+            float emptySpace = parentRect.width - sideLength * Settings.Cols;
             offset.x += emptySpace / 2;
         }
         spotT.localPosition = offset;
 
-        for (int r = 0; r < Rows; r++)
+        for (int r = 0; r < Settings.Rows; r++)
         {
-            for (int c = 0; c < Cols; c++)
+            for (int c = 0; c < Settings.Cols; c++)
             {
                 // stamp it down
                 GameObject currentSpot =
@@ -89,7 +84,7 @@ public class GameInitializer : MonoBehaviour {
     /// <param name="col"></param>
     void PopulateSpot(GameObject go, int row, int col)
     {
-        go.name = "" + (row * Cols + col);
+        go.name = "" + (row * Settings.Cols + col);
 
         Spot spot = _game.Spots[row, col];
         go.GetComponent<SpotButton>().Spot = spot;

@@ -59,3 +59,4 @@ Hour 15
 		Intermediate: 16x16, 40 mines
 		Expert: 16x30, 99 mines
 		Endurance: 20x40, 160 mines
+	Refactor Settings into MVC framework
