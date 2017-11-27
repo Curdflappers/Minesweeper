@@ -226,6 +226,7 @@ public class Game {
 
     public void Reset()
     {
+        Settings.UpdateField("mode", 1); // start in sweep mode always
         _newGame = true;
         _gameOver = false;
         _gameWon = false;
@@ -234,7 +235,7 @@ public class Game {
         for (int r = 0; r < mines.GetLength(0); r++)
             for (int c = 0; c < mines.GetLength(1); c++)
                 _spots[r, c].Reset(mines[r, c], NeighboringMines(r, c, mines));
-
+        
         _minesLeft = _totalMines;
         _unflaggedSpots = _rows * _cols;
         RaiseMinesLeftChanged(null);

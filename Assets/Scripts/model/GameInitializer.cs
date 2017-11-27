@@ -5,6 +5,7 @@ public class GameInitializer : MonoBehaviour {
 
     void Start()
     {
+        Settings.UpdateField("mode", 1); // start in sweep mode always
         _game = new Game(Settings.Rows, Settings.Cols, Settings.Mines);
         PlaceSpots();
         ConnectUI();
