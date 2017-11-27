@@ -15,9 +15,9 @@ A simple Minesweeper implementation for Android and PC.
 
 - Customize difficulty (rows, columns, mines)
 
-**Future elements**
-
 - Preset difficulties
+
+**Future elements**
 
 - Store high score
 
