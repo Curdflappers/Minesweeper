@@ -168,6 +168,7 @@ public class Game {
             {
                 if (!spot.Revealed && !spot.Flagged) { spot.Flag(); }
             }
+            _minesLeft = 0;
             RaiseMinesLeftChanged(new GameEventArgs());
         }
     }
