@@ -65,3 +65,8 @@ Hour 16
 	Refactor Mode Button into MVC framework
 	Build 0.2.1
 
+Hour 17
+	Optimize image system: flatten sprites into one image
+	
+Hour 18 (Starting 12:50pm)
+	Start rewriting to minimize event calling

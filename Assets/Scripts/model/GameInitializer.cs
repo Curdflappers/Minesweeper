@@ -90,5 +90,6 @@ public class GameInitializer : MonoBehaviour {
         Spot spot = _game.Spots[row, col];
         go.GetComponent<SpotButton>().Spot = spot;
         go.GetComponent<SpotView>().Spot = spot;
+        spot.View = go.GetComponent<SpotView>();
     }
 }

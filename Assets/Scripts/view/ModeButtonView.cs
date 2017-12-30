@@ -4,14 +4,11 @@ using UnityEngine.UI;
 public class ModeButtonView : SettingsView {
 
     Sprite _sweepSprite, _flagSprite;
-    Color _sweepColor, _flagColor;
 
     internal override void Start()
     {
         _sweepSprite = Resources.Load<Sprite>("Sprites/mine");
         _flagSprite = Resources.Load<Sprite>("Sprites/flag");
-        _sweepColor = Color.white;
-        _flagColor = Color.red;
         base.Start();
     }
 
@@ -29,7 +26,6 @@ public class ModeButtonView : SettingsView {
             Image image = 
                 transform.FindChild("Mode Image").GetComponent<Image>();
             image.sprite = sweepMode ? _sweepSprite : _flagSprite;
-            image.color = sweepMode ? _sweepColor : _flagColor;
         }
     }
 }

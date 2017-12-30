@@ -53,9 +53,8 @@ public class Game {
             for(int c = 0; c < _cols; c++)
             {
                 int neighboringMines = NeighboringMines(r, c, mines);
-                _spots[r, c] = new Spot(mines[r, c], neighboringMines, r, c);
+                _spots[r, c] = new Spot(mines[r, c], neighboringMines, r, c, this);
             }
-        AttachSpots();
     }
 
     private int NeighboringMines(int row, int col, bool[,] mines)
@@ -111,24 +110,12 @@ public class Game {
     {
         _spots = spots;
     }
+    
 
-    /// <summary>
-    /// Listen to each element of _spots
-    /// </summary>
-    private void AttachSpots()
-    {
-        foreach (Spot spot in _spots)
-        {
-            spot.StateChanged += HandleSpotChanged;
-            spot.Clicked += HandleSpotClicked;
-        }
-    }
-
-    public virtual void HandleSpotChanged(object o, SpotEventArgs e)
+    public virtual void HandleSpotChanged(Spot s, bool exploded)
     {
         if(_newGame) { return; } // don't update on spot resets
-        Spot currSpot = (Spot)o;
-        if (e.Exploded)
+        if (exploded)
         {
             _gameOver = true;
             _gameWon = false;
@@ -141,22 +128,22 @@ public class Game {
         {
             return;
         }
-        _unflaggedSpots += currSpot.Flagged || currSpot.Revealed ? -1 : 1;
+        _unflaggedSpots += s.Flagged || s.Revealed ? -1 : 1;
 
         // Spot was swept, but didn't explode
-        if (currSpot.Revealed)
+        if (s.Revealed)
         {
             // sweep all neighbors if this has no neighboring mines
-            if(currSpot.NeighboringMines == 0)
+            if(s.NeighboringMines == 0)
             {
-                for(int r = currSpot.Row - 1; r <= currSpot.Row + 1; r++)
-                    for(int c = currSpot.Col - 1; c <= currSpot.Col + 1; c++)
+                for(int r = s.Row - 1; r <= s.Row + 1; r++)
+                    for(int c = s.Col - 1; c <= s.Col + 1; c++)
                         if (ValidLoc(r, c)) { _spots[r, c].TrySweep(); }
             }
         }
         else // spot flag state changed, update mines left
         {
-            _minesLeft += currSpot.Flagged ? -1 : 1;
+            _minesLeft += s.Flagged ? -1 : 1;
             RaiseMinesLeftChanged(new GameEventArgs());
         }
         
@@ -173,14 +160,13 @@ public class Game {
         }
     }
 
-    public virtual void HandleSpotClicked(object o, SpotEventArgs e)
+    public void HandleSpotClicked(Spot spot)
     {
         if (_newGame)
         {
             _newGame = false;
             RaiseMinesLeftChanged(null);
         }
-        Spot spot = (Spot)o;
 
         if (spot.Revealed)
         {

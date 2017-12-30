@@ -6,21 +6,26 @@ public class Spot {
     bool _flagged;
     int _neighboringMines;
     int _row, _col;
+    Game _game;
+    SpotView _view;
 
     public bool Mine { get { return _mine; } }
     public bool Revealed { get { return _revealed; } }
     public bool Flagged { get { return _flagged; } }
     public int NeighboringMines { get { return _neighboringMines; } }
     public int Row { get { return _row; } }
-
-    internal void HandleOnClick()
+    public int Col { get { return _col; } }
+    public Game Game { get { return _game; } }
+    public SpotView View
     {
-        RaiseClicked(new SpotEventArgs(false));
+        get { return _view; }
+        set
+        {
+            _view = value;
+        }
     }
 
-    public int Col { get { return _col; } }
-
-    public Spot(bool mine, int neighboringMines, int row, int col)
+    public Spot(bool mine, int neighboringMines, int row, int col, Game game)
     {
         _mine = mine;
         _revealed = false;
@@ -28,6 +33,7 @@ public class Spot {
         _neighboringMines = neighboringMines;
         _row = row;
         _col = col;
+        _game = game;
     }
 
     /// <summary>
@@ -40,7 +46,7 @@ public class Spot {
         if(_flagged || _revealed) { return; }
 
         _revealed = true;
-        RaiseStateChanged(new SpotEventArgs(_mine));
+        UpdateView(_mine);
     }
 
     /// <summary>
@@ -51,32 +57,20 @@ public class Spot {
         if (!_revealed)
         {
             _revealed = true;
-            RaiseStateChanged(new SpotEventArgs(false));
+            UpdateView(false);
         }
     }
 
     public void Flag()
     {
         _flagged = !_flagged;
-        RaiseStateChanged(new SpotEventArgs(false)); // never explodes here
+        UpdateView(false); // never explodes here
     }
-
-    public event EventHandler<SpotEventArgs> StateChanged;
-    protected virtual void RaiseStateChanged(SpotEventArgs e)
+    
+    protected virtual void UpdateView(bool exploded)
     {
-        if (StateChanged != null) // if there are some listeners
-        {
-            StateChanged(this, e); // notify all listeners
-        }
-    }
-
-    public event EventHandler<SpotEventArgs> Clicked;
-    protected virtual void RaiseClicked(SpotEventArgs e)
-    {
-        if (Clicked != null)
-        {
-            Clicked(this, e);
-        }
+        if(_view != null) { _view.HandleStateChanged(exploded); }
+        if(_game != null) { _game.HandleSpotChanged(this, exploded); }
     }
 
     public void Reset(bool mine, int neighboringMines)
@@ -85,6 +79,6 @@ public class Spot {
         _flagged = false;
         _mine = mine;
         _neighboringMines = neighboringMines;
-        RaiseStateChanged(new SpotEventArgs(false));
+        UpdateView(false);
     }
 }

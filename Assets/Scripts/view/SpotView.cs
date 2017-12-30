@@ -17,35 +17,44 @@ public class SpotView : MonoBehaviour {
         set
         {
             _spot = value;
-            _spot.StateChanged += HandleStateChanged;
             neighboringUpdated = false;
-            UpdateState(false);
-            // TODO FIX THIS
-            // TODO unlisten to other spot
-            // listen to new spot
+            HandleStateChanged(false);
         }
     }
 
-    public virtual void HandleStateChanged(object o, SpotEventArgs e)
+    public virtual void HandleStateChanged(bool exploded)
     {
-        UpdateState(e.Exploded);
-    }
-
-    void UpdateState(bool exploded)
-    {
-        ChildImage("Flag Image").enabled = _spot.Flagged;
-        ChildImage("False Flag Image").enabled = 
-            _spot.Revealed && _spot.Flagged && !_spot.Mine;
-        ChildImage("Unrevealed Image").enabled = _spot.Flagged || !_spot.Revealed;
-        if (!neighboringUpdated)
+        Image image = GetComponent<Image>();
+        string spriteName = "";
+        if (exploded) { spriteName = "explodedMine"; }
+        else
         {
-            string path = "Sprites/";
-            path += _spot.Mine ? "mine" : "" + _spot.NeighboringMines;
-
-            ChildImage("Number Image").sprite = Resources.Load<Sprite>(path);
+            if (_spot.Flagged)
+            {
+                if (_spot.Revealed && !_spot.Mine)
+                {
+                    spriteName = "falseFlag";
+                }
+                else { spriteName = "flag"; }
+            }
+            else
+            {
+                if (_spot.Revealed)
+                {
+                    if (_spot.Mine) { spriteName = "mine"; }
+                    else
+                    {
+                        spriteName += _spot.NeighboringMines;
+                    }
+                }
+                else
+                {
+                    spriteName = "unrevealed";
+                }
+            }
         }
 
-        GetComponent<Image>().color = exploded ? Color.red : Color.white;
+        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + spriteName);
     }
 
     /// <summary>

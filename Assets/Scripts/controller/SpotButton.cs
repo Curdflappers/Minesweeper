@@ -17,6 +17,6 @@ public class SpotButton : MonoBehaviour {
     /// </summary>
     public void OnClick()
     {
-        _spot.HandleOnClick();
+        _spot.Game.HandleSpotClicked(_spot);
     }
 }
