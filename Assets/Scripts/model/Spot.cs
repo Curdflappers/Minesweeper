@@ -46,7 +46,7 @@ public class Spot {
         if(_flagged || _revealed) { return; }
 
         _revealed = true;
-        UpdateView(_mine);
+        UpdateState(_mine);
     }
 
     /// <summary>
@@ -57,17 +57,17 @@ public class Spot {
         if (!_revealed)
         {
             _revealed = true;
-            UpdateView(false);
+            UpdateState(false);
         }
     }
 
     public void Flag()
     {
         _flagged = !_flagged;
-        UpdateView(false); // never explodes here
+        UpdateState(false); // never explodes here
     }
     
-    protected virtual void UpdateView(bool exploded)
+    protected virtual void UpdateState(bool exploded)
     {
         if(_view != null) { _view.HandleStateChanged(exploded); }
         if(_game != null) { _game.HandleSpotChanged(this, exploded); }
@@ -79,6 +79,6 @@ public class Spot {
         _flagged = false;
         _mine = mine;
         _neighboringMines = neighboringMines;
-        UpdateView(false);
+        UpdateState(false);
     }
 }

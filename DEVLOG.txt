@@ -68,5 +68,8 @@ Hour 16
 Hour 17
 	Optimize image system: flatten sprites into one image
 	
-Hour 18 (Starting 12:50pm)
-	Start rewriting to minimize event calling
+Hour 18
+	Rewrite to minimize in-game event calling
+	Build 0.2.2
+	Play test to compare battery usage
+	

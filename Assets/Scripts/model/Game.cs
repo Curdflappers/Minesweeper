@@ -15,12 +15,16 @@ public class Game {
     bool _newGame;
     bool _gameOver;
     bool _gameWon;
+    MinesLeftView _minesLeftView;
+    TimerView _timerView;
 
     public int MinesLeft { get { return _minesLeft; } }
     public bool NewGame { get { return _newGame; } }
     public bool GameOver { get { return _gameOver; } }
     public bool GameWon { get { return _gameWon; } }
-
+    public MinesLeftView MinesLeftView { set { _minesLeftView = value; } }
+    public TimerView TimerView { set { _timerView = value; } }
+    
     public Spot[,] Spots
     {
         get
@@ -120,7 +124,7 @@ public class Game {
             _gameOver = true;
             _gameWon = false;
             foreach (Spot spot in _spots) { spot.Reveal(); }
-            RaiseMinesLeftChanged(null);
+            HandleMinesLeftChanged();
             return;
         }
 
@@ -144,7 +148,7 @@ public class Game {
         else // spot flag state changed, update mines left
         {
             _minesLeft += s.Flagged ? -1 : 1;
-            RaiseMinesLeftChanged(new GameEventArgs());
+            HandleMinesLeftChanged();
         }
         
         if (_unflaggedSpots == _minesLeft)
@@ -156,7 +160,7 @@ public class Game {
                 if (!spot.Revealed && !spot.Flagged) { spot.Flag(); }
             }
             _minesLeft = 0;
-            RaiseMinesLeftChanged(new GameEventArgs());
+            HandleMinesLeftChanged();
         }
     }
 
@@ -165,7 +169,7 @@ public class Game {
         if (_newGame)
         {
             _newGame = false;
-            RaiseMinesLeftChanged(null);
+            HandleMinesLeftChanged();
         }
 
         if (spot.Revealed)
@@ -225,16 +229,13 @@ public class Game {
         
         _minesLeft = _totalMines;
         _unflaggedSpots = _rows * _cols;
-        RaiseMinesLeftChanged(null);
+        HandleMinesLeftChanged();
     }
 
-    public event EventHandler<GameEventArgs> MinesLeftChanged;
-    protected virtual void RaiseMinesLeftChanged(GameEventArgs e)
+    protected virtual void HandleMinesLeftChanged()
     {
-        if (MinesLeftChanged != null)
-        {
-            MinesLeftChanged(this, e);
-        }
+        if (_minesLeftView != null) { _minesLeftView.HandleMinesLeftChanged(MinesLeft); }
+        if (_timerView != null) { _timerView.HandleGameStateChanged(this); }
     }
 
     private class Location

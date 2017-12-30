@@ -18,10 +18,12 @@ public class GameInitializer : MonoBehaviour {
     {
         GameObject.Find("Reset Button").
             GetComponent<GameController>().Game = _game;
-        GameObject.Find("Mines Left Text").
-            GetComponent<MinesLeftView>().Game = _game;
-        GameObject.Find("Timer Text").
-            GetComponent<TimerView>().Game = _game;
+
+        _game.MinesLeftView = 
+            GameObject.Find("Mines Left Text").GetComponent<MinesLeftView>();
+
+        _game.TimerView = 
+            GameObject.Find("Timer Text").GetComponent<TimerView>();
     }
 
     /// <summary>
