@@ -71,5 +71,10 @@ Hour 17
 Hour 18
 	Rewrite to minimize in-game event calling
 	Build 0.2.2
+	
+Hour 19
 	Play test to compare battery usage
 	
+Hour 20
+	Close development on Minesweeper, using Unity was a bad decision
+	Development on Minesweeper will continue as MinesweeperAndroid, made with Android Studio

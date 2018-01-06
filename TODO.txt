@@ -14,9 +14,11 @@ Different colored flags
 
 Autosolver
 
-Hints
+Hints (using what the Autosolver would do)
 
+Infinite Minesweeper
 
+Valley Sweeper: sweep one column at a time: each column swept is cleared to reveal a new column, and mines get denser and denser
 
 --OTHER--
 
