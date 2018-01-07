@@ -1,4 +1,6 @@
 
+*Development for the Unity implementation has stopped to work on a streamlined Android Studio implementation. See github.com/Curdflappers/MinesweeperAndroid for an in-progress implementation*
+
 # Minesweeper
 
 A simple Minesweeper implementation for Android and PC.
@@ -16,11 +18,3 @@ A simple Minesweeper implementation for Android and PC.
 - Customize difficulty (rows, columns, mines)
 
 - Preset difficulties
-
-**Future elements**
-
-- Store high score
-
-- Give hints on demand
-
-- Autosolver
